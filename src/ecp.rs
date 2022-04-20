@@ -24,8 +24,7 @@ use super::rom;
 
 pub use super::rom::{CURVETYPE, CURVE_PAIRING_TYPE, SEXTIC_TWIST, SIGN_OF_X, HASH_TYPE, AESKEY};
 pub use types::CurveType;
-use std::str::SplitWhitespace;
-use std::fmt;
+use crate::std::{string::String, fmt, str::SplitWhitespace, format};
 
 #[derive(Copy, Clone)]
 pub struct ECP {

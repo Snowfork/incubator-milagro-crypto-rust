@@ -23,8 +23,8 @@ use super::fp4::FP4;
 use super::big::BIG;
 use super::rom;
 use types::SexticTwist;
-use std::str::SplitWhitespace;
 use super::ecp;
+use crate::std::{string::String, str::SplitWhitespace, format};
 
 pub const ZERO: usize=0;
 pub const ONE: usize=1;
@@ -425,7 +425,7 @@ impl FP12 {
                     z2.copy(&self.b);
                     z2.mul(&y.b);
                 }
-            } else { 
+            } else {
                z2.copy(&self.b);
                z2.mul(&y.b);
             }
@@ -442,7 +442,7 @@ impl FP12 {
 
             t0.copy(&z0); t0.neg();
             t1.copy(&z2); t1.neg();
- 
+
             z1.add(&t0);
             self.b.copy(&z1); self.b.add(&t1);
 
@@ -451,7 +451,7 @@ impl FP12 {
 
             t0.copy(&self.a); t0.add(&self.c); t0.norm();
             t1.copy(&y.a); t1.add(&y.c); t1.norm();
-	
+
             t0.mul(&t1);
             z2.add(&t0);
 
@@ -477,7 +477,7 @@ impl FP12 {
                     t0.copy(&self.c);
                     t0.mul(&y.c);
                 }
-            } else { 
+            } else {
                 t0.copy(&self.c);
                 t0.mul(&y.c);
             }
@@ -495,7 +495,7 @@ impl FP12 {
                 self.smul(&y);
                 return;
             }
-            if ecp::SEXTIC_TWIST==SexticTwist::D_TYPE { // dense by sparser - 13m 
+            if ecp::SEXTIC_TWIST==SexticTwist::D_TYPE { // dense by sparser - 13m
                 let mut z0=FP4::new_copy(&self.a);
                 let mut z2=FP4::new_copy(&self.b);
                 let mut z3=FP4::new_copy(&self.b);
@@ -539,7 +539,7 @@ impl FP12 {
                 let mut z3 = FP4::new();
                 let mut t0 = FP4::new_copy(&self.a);
                 let mut t1 = FP4::new();
-	
+
                 z0.mul(&y.a);
                 t0.add(&self.b); t0.norm();
 
@@ -562,7 +562,7 @@ impl FP12 {
                 t0.mul(&t1);
                 z2.add(&t0);
                 t0.copy(&self.c);
-			
+
                 t0.pmul(&y.c.getb());
                 t0.times_i();
                 t1.copy(&t0); t1.neg();
@@ -574,7 +574,7 @@ impl FP12 {
                 z3.norm();
                 z3.times_i();
                 self.a.copy(&z0); self.a.add(&z3);
-           }	
+           }
         }
         self.stype=DENSE;
         self.norm();
@@ -582,7 +582,7 @@ impl FP12 {
 
     /* Special case of multiplication arises from special form of ATE pairing line function */
     pub fn smul(&mut self, y: &FP12) {
-        if ecp::SEXTIC_TWIST==SexticTwist::D_TYPE {	
+        if ecp::SEXTIC_TWIST==SexticTwist::D_TYPE {
             let mut w1=FP2::new_copy(&self.a.geta());
             let mut w2=FP2::new_copy(&self.a.getb());
             let mut w3=FP2::new_copy(&self.b.geta());
@@ -626,7 +626,7 @@ impl FP12 {
 	    self.a.set_fp2s(&w1,&tc);
 	    self.b.set_fp2s(&td,&te);
 	    self.c.set_fp2(&w3);
-           
+
             self.a.norm();
             self.b.norm();
         } else {

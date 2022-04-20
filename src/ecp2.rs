@@ -23,8 +23,7 @@ use super::ecp;
 use super::fp2::FP2;
 use super::big::BIG;
 use types::{SexticTwist, CurvePairingType, SignOfX};
-use std::str::SplitWhitespace;
-use std::fmt;
+use crate::std::{string::String, fmt, str::SplitWhitespace, format};
 
 #[derive(Copy, Clone)]
 pub struct ECP2 {

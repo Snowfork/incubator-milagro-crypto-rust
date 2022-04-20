@@ -27,8 +27,7 @@ use rand::RAND;
 
 pub use super::rom::MODBYTES;
 pub use super::rom::BASEBITS;
-use std::cmp::Ordering;
-use std::fmt;
+use crate::std::{string::String, fmt, cmp::Ordering, format};
 
 pub const NLEN: usize = (1 + ((8 * MODBYTES - 1) / BASEBITS));
 pub const DNLEN: usize = 2 * NLEN;
@@ -355,7 +354,7 @@ impl BIG {
     pub fn from_hex(val: String) -> BIG {
         BIG::fromstring(val)
     }
-    
+
     pub fn to_hex(&mut self) -> String {
         self.tostring()
     }

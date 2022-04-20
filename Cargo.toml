@@ -14,7 +14,8 @@ name = "amcl"
 path = "src/lib.rs"
 
 [features]
-default = ["bn254"]
+default = ["bn254", "std"]
+std = []
 bn254 = []
 bn254cx = []
 ansii = []

@@ -30,6 +30,7 @@ use super::dbig::DBIG;
 use super::ecp;
 use super::rom;
 use types::{SexticTwist, CurvePairingType, SignOfX};
+use crate::std::Vec;
 
 #[allow(non_snake_case)]
 fn linedbl(A: &mut ECP2, qx: &FP, qy: &FP) -> FP12 {
@@ -240,7 +241,7 @@ pub fn another(r:&mut [FP12],P1: &ECP2,Q1: &ECP) {
         let lv2=lineadd(&mut A,&K,&qx,&qy);
         lv.smul(&lv2);
 	r[0].ssmul(&lv);
-    } 
+    }
 }
 
 #[allow(non_snake_case)]
@@ -256,7 +257,7 @@ pub fn ate(P1: &ECP2, Q1: &ECP) -> FP12 {
             f.inverse();
             f.norm();
         }
-    } 
+    }
     let mut P = ECP2::new();
     P.copy(P1);
     P.affine();
@@ -330,7 +331,7 @@ pub fn ate2(P1: &ECP2, Q1: &ECP, R1: &ECP2, S1: &ECP) -> FP12 {
             f.inverse();
             f.norm();
         }
-    } 
+    }
 
     let mut P = ECP2::new();
     P.copy(P1);

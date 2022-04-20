@@ -24,7 +24,7 @@ use super::rom;
 use super::super::arch::Chunk;
 use super::super::arch;
 use types::ModType;
-use std::str::FromStr;
+use crate::std::{string::String, string::ToString, str::FromStr, str::SplitWhitespace, format, fmt};
 
 #[derive(Copy, Clone)]
 pub struct FP {
@@ -51,8 +51,6 @@ impl fmt::Debug for FP {
 }
 
 pub use super::rom::{MODBITS, MOD8, MODTYPE, SH};
-use std::str::SplitWhitespace;
-use std::fmt;
 
 pub const FEXCESS:i32 = (((1 as i32)<<SH)-1);
 pub const OMASK:Chunk = (-1)<<(MODBITS%big::BASEBITS);
@@ -149,7 +147,7 @@ impl FP {
             t.norm();
             return t;
         }
-    
+
         if MODTYPE==ModType::MONTGOMERY_FRIENDLY {
             let mut b = BIG::new();
             for i in 0..big::NLEN {

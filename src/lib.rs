@@ -1,3 +1,6 @@
+#![cfg_attr(not(feature = "std"), no_std)]
+extern crate alloc;
+
 pub mod aes;
 pub mod gcm;
 pub mod hash256;
@@ -7,6 +10,7 @@ pub mod rand;
 pub mod sha3;
 pub mod nhs;
 pub mod types;
+mod std;
 #[cfg(target_pointer_width = "32")]
 #[path = "arch/arch32.rs"]
 pub mod arch;
