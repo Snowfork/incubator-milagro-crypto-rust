@@ -22,7 +22,7 @@ use super::dbig::DBig;
 use super::fp;
 use super::fp::FP;
 use super::rom;
-use crate::std::{string::String, str::SplitWhitespace, fmt, format};
+use crate::std::{fmt, format, str::SplitWhitespace, string::String};
 
 #[derive(Clone)]
 pub struct FP2 {

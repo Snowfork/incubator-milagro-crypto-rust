@@ -5,7 +5,11 @@ authors = ["Nikita Khateev <nikita.khateev@dsr-corporation.com>", "Kirk Baird <b
 description = "The Apache Milagro Cryptographic Library (version 3)"
 license = "Apache-2.0"
 repository = "https://github.com/apache/incubator-milagro-crypto-rust"
-edition = "2018"
+edition = "2021"
+
+[dependencies]
+codec = { version = "3.1.5", package = "parity-scale-codec", default-features = false, features = [ "derive", "max-encoded-len" ] }
+scale-info = { version = "2.5.0", default-features = false, features = [ "derive" ] }
 
 [dev-dependencies]
 hex = "0.3"
@@ -48,8 +52,12 @@ name = "rsa4096"
 harness = false
 
 [features]
-default = ["bn254", "std"]
-std = []
+default = ["std"]
+std = [
+  "bls381",
+  "codec/std",
+  "scale-info/std",
+]
 all = [
   "anssi","bls24","bls48","bls381","bls383","bls461","bn254","bn254cx",
   "brainpool","c25519","c41417","ed25519","fp256bn","fp512bn","goldilocks","hifive",

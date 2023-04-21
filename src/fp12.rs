@@ -23,8 +23,8 @@ use super::ecp;
 use super::fp2::FP2;
 use super::fp4::FP4;
 use super::rom;
+use crate::std::{format, str::SplitWhitespace, string::String};
 use crate::types::SexticTwist;
-use crate::std::{string::String, str::SplitWhitespace, format};
 
 pub const ZERO: usize = 0;
 pub const ONE: usize = 1;

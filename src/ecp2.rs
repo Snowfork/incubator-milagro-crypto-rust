@@ -22,8 +22,8 @@ use super::big::Big;
 use super::ecp;
 use super::fp2::FP2;
 use super::rom;
+use crate::std::{fmt, format, str::SplitWhitespace, string::String};
 use crate::types::{CurvePairingType, SexticTwist, SignOfX};
-use crate::std::{string::String, fmt, str::SplitWhitespace, format};
 
 /// Elliptic Curve Point over Fp2
 ///

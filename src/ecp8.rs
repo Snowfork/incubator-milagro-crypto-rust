@@ -45,7 +45,6 @@ impl PartialEq for ECP8 {
 
 impl Eq for ECP8 {}
 
-
 #[allow(non_snake_case)]
 impl ECP8 {
     /// New

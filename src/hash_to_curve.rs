@@ -29,7 +29,7 @@ use crate::errors::AmclError;
 use crate::hash256::{BLOCK_SIZE as SHA256_BLOCK_SIZE, HASH256, HASH_BYTES as SHA256_HASH_BYTES};
 use crate::hash384::{BLOCK_SIZE as SHA384_BLOCK_SIZE, HASH384, HASH_BYTES as SHA384_HASH_BYTES};
 use crate::hash512::{BLOCK_SIZE as SHA512_BLOCK_SIZE, HASH512, HASH_BYTES as SHA512_HASH_BYTES};
-use crate::std::{Vec, vec};
+use crate::std::{vec, Vec};
 
 /// Oversized DST padding
 pub const OVERSIZED_DST: &[u8] = b"H2C-OVERSIZE-DST-";

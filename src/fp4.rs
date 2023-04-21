@@ -20,7 +20,7 @@ under the License.
 use super::big::Big;
 use super::fp::FP;
 use super::fp2::FP2;
-use crate::std::{string::String, str::SplitWhitespace, format};
+use crate::std::{format, str::SplitWhitespace, string::String};
 
 #[derive(Clone)]
 pub struct FP4 {

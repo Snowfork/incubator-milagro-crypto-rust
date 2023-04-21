@@ -23,10 +23,12 @@ use super::fp::FP;
 use super::rom;
 
 pub use super::rom::{AESKEY, CURVETYPE, CURVE_PAIRING_TYPE, HASH_TYPE, SEXTIC_TWIST, SIGN_OF_X};
+use crate::std::{fmt, format, str::SplitWhitespace, string::String};
 pub use crate::types::CurveType;
-use crate::std::{string::String, fmt, str::SplitWhitespace, format};
+use codec::{Decode, Encode, MaxEncodedLen};
+use scale_info::TypeInfo;
 
-#[derive(Clone)]
+#[derive(Clone, Encode, Decode, TypeInfo, MaxEncodedLen)]
 pub struct ECP {
     x: FP,
     y: FP,
@@ -1284,7 +1286,6 @@ impl ECP {
         let P = self.mul(&c);
         *self = P.clone();
     }
-
 
     /// Map It
     ///

@@ -335,7 +335,6 @@ impl ECP4 {
         return format!("({},{})", W.x.to_string(), W.y.to_string());
     }
 
-
     /* Calculate RHS of twisted curve equation x^3+B/i */
     pub fn rhs(x: &FP4) -> FP4 {
         //x.norm();

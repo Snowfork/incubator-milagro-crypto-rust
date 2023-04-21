@@ -23,6 +23,8 @@ use crate::rand::RAND;
 
 pub use super::rom::BASEBITS;
 pub use super::rom::MODBYTES;
+use codec::{Decode, Encode, MaxEncodedLen};
+use scale_info::TypeInfo;
 
 pub const NLEN: usize = 1 + (8 * MODBYTES - 1) / BASEBITS;
 pub const DNLEN: usize = 2 * NLEN;
@@ -31,9 +33,9 @@ pub const HBITS: usize = BASEBITS / 2;
 pub const HMASK: Chunk = (1 << HBITS) - 1;
 pub const NEXCESS: isize = 1 << (arch::CHUNK - BASEBITS - 1);
 pub const BIGBITS: usize = MODBYTES * 8;
-use crate::std::{string::String, fmt, cmp::Ordering, format};
+use crate::std::{cmp::Ordering, fmt, format, string::String};
 
-#[derive(Clone)]
+#[derive(Clone, Encode, Decode, TypeInfo, MaxEncodedLen)]
 pub struct Big {
     pub w: [Chunk; NLEN],
 }
