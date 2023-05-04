@@ -35,7 +35,7 @@ pub const NEXCESS: isize = 1 << (arch::CHUNK - BASEBITS - 1);
 pub const BIGBITS: usize = MODBYTES * 8;
 use crate::std::{cmp::Ordering, fmt, format, string::String};
 
-#[derive(Clone, Encode, Decode, TypeInfo, MaxEncodedLen)]
+#[derive(Default, Copy, Clone, Encode, Decode, TypeInfo, MaxEncodedLen)]
 pub struct Big {
     pub w: [Chunk; NLEN],
 }

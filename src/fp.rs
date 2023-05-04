@@ -29,7 +29,7 @@ use crate::types::ModType;
 use codec::{Decode, Encode, MaxEncodedLen};
 use scale_info::TypeInfo;
 
-#[derive(Clone, Encode, Decode, TypeInfo, MaxEncodedLen)]
+#[derive(Default, Copy, Clone, Encode, Decode, TypeInfo, MaxEncodedLen)]
 pub struct FP {
     pub x: Big,
     pub xes: i32,

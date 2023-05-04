@@ -28,7 +28,7 @@ pub use crate::types::CurveType;
 use codec::{Decode, Encode, MaxEncodedLen};
 use scale_info::TypeInfo;
 
-#[derive(Clone, Encode, Decode, TypeInfo, MaxEncodedLen)]
+#[derive(Default, Copy, Clone, Encode, Decode, TypeInfo, MaxEncodedLen)]
 pub struct ECP {
     x: FP,
     y: FP,
