@@ -1,8 +1,7 @@
 #[cfg(feature = "std")]
-pub use std::{vec, vec::Vec, time, fmt, cmp, format, borrow, string, str, str::*};
+pub use std::{borrow, cmp, fmt, format, str, str::*, string, time, vec, vec::Vec};
 
 #[cfg(not(feature = "std"))]
-pub use alloc::{vec, vec::Vec, string, format, borrow};
+pub use alloc::{borrow, format, string, vec, vec::Vec};
 #[cfg(not(feature = "std"))]
-pub use core::{str, fmt, cmp};
-
+pub use core::{cmp, fmt, str};

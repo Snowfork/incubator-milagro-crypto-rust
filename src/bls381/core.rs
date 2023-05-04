@@ -29,7 +29,7 @@ use super::iso::{iso11_to_ecp, iso3_to_ecp2};
 use crate::errors::AmclError;
 use crate::hash256::HASH256;
 use crate::rand::RAND;
-use crate::std::{Vec, borrow::ToOwned};
+use crate::std::{borrow::ToOwned, Vec};
 
 // Key Generation Constants
 /// Domain for key generation.
@@ -549,7 +549,8 @@ pub(crate) fn core_verify_g1(public_key: &[u8], msg: &[u8], signature: &[u8], ds
     let signature = signature.unwrap();
 
     // Subgroup checks for signature and public key
-    if !subgroup_check_g1(&signature) || !subgroup_check_g2(&public_key) || public_key.is_infinity() {
+    if !subgroup_check_g1(&signature) || !subgroup_check_g2(&public_key) || public_key.is_infinity()
+    {
         return false;
     }
 
@@ -703,7 +704,8 @@ pub(crate) fn core_verify_g2(public_key: &[u8], msg: &[u8], signature: &[u8], ds
     let signature = signature.unwrap();
 
     // Subgroup checks for signature and public key
-    if !subgroup_check_g1(&public_key) || public_key.is_infinity() || !subgroup_check_g2(&signature) {
+    if !subgroup_check_g1(&public_key) || public_key.is_infinity() || !subgroup_check_g2(&signature)
+    {
         return false;
     }
 

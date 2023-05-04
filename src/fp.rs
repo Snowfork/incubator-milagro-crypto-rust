@@ -22,10 +22,14 @@ use super::big::Big;
 use super::dbig::DBig;
 use super::rom;
 use crate::arch::{self, Chunk};
+use crate::std::{
+    fmt, format, str::FromStr, str::SplitWhitespace, string::String, string::ToString,
+};
 use crate::types::ModType;
-use crate::std::{string::String, string::ToString, str::FromStr, str::SplitWhitespace, format, fmt};
+use codec::{Decode, Encode, MaxEncodedLen};
+use scale_info::TypeInfo;
 
-#[derive(Clone)]
+#[derive(Default, Copy, Clone, Encode, Decode, TypeInfo, MaxEncodedLen)]
 pub struct FP {
     pub x: Big,
     pub xes: i32,

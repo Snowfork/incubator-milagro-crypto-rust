@@ -21,7 +21,7 @@ use super::big;
 use super::big::{Big, MODBYTES};
 use crate::arch;
 use crate::arch::Chunk;
-use crate::std::{string::String, format};
+use crate::std::{format, string::String};
 
 #[derive(Clone)]
 pub struct DBig {
@@ -29,7 +29,6 @@ pub struct DBig {
 }
 
 impl DBig {
-
     /// Creates new DBig as 0.
     #[inline(always)]
     pub fn new() -> DBig {
