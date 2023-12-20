@@ -26,7 +26,10 @@ pub use super::rom::{AESKEY, CURVETYPE, CURVE_PAIRING_TYPE, HASH_TYPE, SEXTIC_TW
 pub use crate::types::CurveType;
 use crate::std::{string::String, fmt, str::SplitWhitespace, format};
 
-#[derive(Clone)]
+use codec::{Decode, Encode, MaxEncodedLen};
+use scale_info::TypeInfo;
+
+#[derive(Default, Copy, Clone, Encode, Decode, TypeInfo, MaxEncodedLen)]
 pub struct ECP {
     x: FP,
     y: FP,

@@ -9,11 +9,7 @@ extern crate serde_derive;
 extern crate alloc;
 
 pub mod aes;
-#[cfg(target_pointer_width = "32")]
 #[path = "arch/arch32.rs"]
-pub mod arch;
-#[cfg(target_pointer_width = "64")]
-#[path = "arch/arch64.rs"]
 pub mod arch;
 pub mod errors;
 pub mod gcm;
@@ -100,13 +96,8 @@ pub mod bls383 {
 #[cfg(feature = "bls381")]
 #[path = "./"]
 pub mod bls381 {
-    #[cfg(target_pointer_width = "32")]
     #[path = "roms/rom_bls381_32.rs"]
     pub mod rom;
-    #[cfg(target_pointer_width = "64")]
-    #[path = "roms/rom_bls381_64.rs"]
-    pub mod rom;
-
     pub mod big;
     pub mod bls381;
     pub mod dbig;
