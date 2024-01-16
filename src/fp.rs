@@ -26,7 +26,10 @@ use super::rom;
 use crate::arch::{self, Chunk};
 use crate::types::ModType;
 
-#[derive(Clone)]
+use codec::{Decode, Encode, MaxEncodedLen};
+use scale_info::TypeInfo;
+
+#[derive(Default, Copy, Clone, Encode, Decode, TypeInfo, MaxEncodedLen)]
 pub struct FP {
     pub x: Big,
     pub xes: i32,

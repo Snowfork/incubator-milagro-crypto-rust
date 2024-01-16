@@ -24,6 +24,9 @@ use crate::rand::RAND;
 use std::cmp::Ordering;
 use std::fmt;
 
+use codec::{Decode, Encode, MaxEncodedLen};
+use scale_info::TypeInfo;
+
 pub use super::rom::BASEBITS;
 pub use super::rom::MODBYTES;
 
@@ -35,7 +38,7 @@ pub const HMASK: Chunk = (1 << HBITS) - 1;
 pub const NEXCESS: isize = 1 << (arch::CHUNK - BASEBITS - 1);
 pub const BIGBITS: usize = MODBYTES * 8;
 
-#[derive(Clone)]
+#[derive(Default, Clone, Encode, Decode, TypeInfo, MaxEncodedLen)]
 pub struct Big {
     pub w: [Chunk; NLEN],
 }
