@@ -56,8 +56,7 @@ default = ["std"]
 std = [
   "bls381",
   "codec/std",
-  "scale-info/std",
-  "sp-core/std",
+  "scale-info/std"
 ]
 all = [
   "anssi","bls24","bls48","bls381","bls383","bls461","bn254","bn254cx",
