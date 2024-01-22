@@ -687,7 +687,7 @@ dependencies = [
 
 [[package]]
 name = "snowbridge-amcl"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "criterion",
  "hex",
