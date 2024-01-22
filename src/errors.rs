@@ -1,8 +1,7 @@
 use codec::{Decode, Encode, MaxEncodedLen};
 use scale_info::TypeInfo;
 
-#[derive(Copy, Clone, Encode, Decode, TypeInfo, MaxEncodedLen)]
-#[cfg_attr(feature = "std", derive(PartialEq, Debug))]
+#[derive(Copy, Clone, Debug, PartialEq, Encode, Decode, TypeInfo, MaxEncodedLen)]
 pub enum AmclError {
     AggregateEmptyPoints,
     HashToFieldError,
