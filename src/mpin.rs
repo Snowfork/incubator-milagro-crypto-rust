@@ -17,8 +17,6 @@ specific language governing permissions and limitations
 under the License.
 */
 
-use std::time::SystemTime;
-use std::time::UNIX_EPOCH;
 
 use super::big;
 use super::big::Big;
@@ -33,6 +31,7 @@ use crate::hash256::HASH256;
 use crate::hash384::HASH384;
 use crate::hash512::HASH512;
 use crate::rand::RAND;
+use crate::std::Vec;
 
 // MPIN API Functions
 
@@ -174,15 +173,6 @@ fn hashit(sha: usize, n: usize, id: &[u8], w: &mut [u8]) -> bool {
     }
 
     return true;
-}
-
-/// Return time in slots since epoch
-pub fn today() -> usize {
-    return (SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .unwrap()
-        .as_secs()
-        / (60 * 1440)) as usize;
 }
 
 // these next two functions help to implement elligator squared - http://eprint.iacr.org/2014/043
@@ -615,14 +605,6 @@ pub fn client_2(x: &[u8], y: &[u8], sec: &mut [u8]) -> isize {
     return 0;
 }
 
-/// return time since epoch
-pub fn get_time() -> usize {
-    return (SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .unwrap()
-        .as_secs()) as usize;
-}
-
 /// Generate Y = H(epoch, xCID/xID)
 pub fn get_y(sha: usize, timevalue: usize, xcid: &[u8], y: &mut [u8]) {
     const RM: usize = big::MODBYTES as usize;
@@ -933,222 +915,4 @@ pub fn server_key(
     hash(sha, &mut c, &mut U, sk);
 
     0
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::test_utils::*;
-
-    #[test]
-    fn test_mpin_valid() {
-        let mut rng = create_rng();
-
-        pub const PERMITS: bool = true;
-        pub const PINERROR: bool = true;
-        pub const FULL: bool = true;
-
-        let mut s: [u8; EGS] = [0; EGS];
-        const RM: usize = EFS as usize;
-        let mut hcid: [u8; RM] = [0; RM];
-        let mut hsid: [u8; RM] = [0; RM];
-
-        const G1S: usize = 2 * EFS + 1; // Group 1 Size
-        const G2S: usize = 4 * EFS; // Group 2 Size
-        const EAS: usize = ecp::AESKEY;
-
-        let mut sst: [u8; G2S] = [0; G2S];
-        let mut token: [u8; G1S] = [0; G1S];
-        let mut permit: [u8; G1S] = [0; G1S];
-        let mut g1: [u8; 12 * EFS] = [0; 12 * EFS];
-        let mut g2: [u8; 12 * EFS] = [0; 12 * EFS];
-        let mut xid: [u8; G1S] = [0; G1S];
-        let mut xcid: [u8; G1S] = [0; G1S];
-        let mut x: [u8; EGS] = [0; EGS];
-        let mut y: [u8; EGS] = [0; EGS];
-        let mut sec: [u8; G1S] = [0; G1S];
-        let mut r: [u8; EGS] = [0; EGS];
-        let mut z: [u8; G1S] = [0; G1S];
-        let mut hid: [u8; G1S] = [0; G1S];
-        let mut htid: [u8; G1S] = [0; G1S];
-        let mut rhid: [u8; G1S] = [0; G1S];
-        let mut w: [u8; EGS] = [0; EGS];
-        let mut t: [u8; G1S] = [0; G1S];
-        let mut e: [u8; 12 * EFS] = [0; 12 * EFS];
-        let mut f: [u8; 12 * EFS] = [0; 12 * EFS];
-        let mut h: [u8; RM] = [0; RM];
-        let mut ck: [u8; EAS] = [0; EAS];
-        let mut sk: [u8; EAS] = [0; EAS];
-
-        let sha = ecp::HASH_TYPE;
-
-        println!("\nTesting MPIN - PIN is 1234");
-        // Trusted Authority set-up
-
-        random_generate(&mut rng, &mut s);
-        print!("Master Secret s: 0x");
-        printbinary(&s);
-
-        // Create Client Identity
-        let name = "testUser@miracl.com";
-        let client_id = name.as_bytes();
-
-        print!("Client ID= ");
-        printbinary(&client_id);
-
-        hash_id(sha, &client_id, &mut hcid); // Either Client or TA calculates Hash(ID) - you decide!
-
-        // Client and Server are issued secrets by DTA
-        get_server_secret(&s, &mut sst);
-        print!("Server Secret SS: 0x");
-        printbinary(&sst);
-
-        get_client_secret(&mut s, &hcid, &mut token);
-        print!("Client Secret CS: 0x");
-        printbinary(&token);
-
-        // Client extracts PIN from secret to create Token
-        let pin: i32 = 1234;
-        println!("Client extracts PIN= {}", pin);
-        let mut rtn = extract_pin(sha, &client_id, pin, &mut token);
-        if rtn != 0 {
-            println!("FAILURE: EXTRACT_PIN rtn: {}", rtn);
-        }
-
-        print!("Client Token TK: 0x");
-        printbinary(&token);
-
-        if FULL {
-            precompute(&token, &hcid, &mut g1, &mut g2);
-        }
-
-        let mut date = 0;
-        if PERMITS {
-            date = today();
-            // Client gets "Time Token" permit from DTA
-
-            get_client_permit(sha, date, &s, &hcid, &mut permit);
-            print!("Time Permit TP: 0x");
-            printbinary(&permit);
-
-            // This encoding makes Time permit look random - Elligator squared
-            encoding(&mut rng, &mut permit);
-            print!("Encoded Time Permit TP: 0x");
-            printbinary(&permit);
-            decoding(&mut permit);
-            print!("Decoded Time Permit TP: 0x");
-            printbinary(&permit);
-        }
-
-        let pin = 1234;
-
-        println!("MPIN Multi Pass");
-        // Send U=x.ID to server, and recreate secret from token and pin
-        rtn = client_1(
-            sha,
-            date,
-            &client_id,
-            Some(&mut rng),
-            &mut x,
-            pin,
-            &token,
-            &mut sec,
-            Some(&mut xid[..]),
-            Some(&mut xcid[..]),
-            Some(&permit[..]),
-        );
-        if rtn != 0 {
-            println!("FAILURE: CLIENT_1 rtn: {}", rtn);
-        }
-
-        if FULL {
-            hash_id(sha, &client_id, &mut hcid);
-            get_g1_multiple(Some(&mut rng), 1, &mut r, &hcid, &mut z); // Also Send Z=r.ID to Server, remember random r
-        }
-
-        // Server calculates H(ID) and H(T|H(ID)) (if time PERMITS enabled), and maps them to points on the curve HID and HTID resp.
-
-        server_1(sha, date, &client_id, &mut hid, Some(&mut htid[..]));
-
-        if date != 0 {
-            rhid.clone_from_slice(&htid[..]);
-        } else {
-            rhid.clone_from_slice(&hid[..]);
-        }
-
-        // Server generates Random number Y and sends it to Client
-        random_generate(&mut rng, &mut y);
-
-        if FULL {
-            hash_id(sha, &client_id, &mut hsid);
-            get_g1_multiple(Some(&mut rng), 0, &mut w, &rhid, &mut t); // Also send T=w.ID to client, remember random w
-        }
-
-        // Client Second Pass: Inputs Client secret SEC, x and y. Outputs -(x+y)*SEC
-        rtn = client_2(&x, &y, &mut sec);
-        if rtn != 0 {
-            println!("FAILURE: CLIENT_2 rtn: {}", rtn);
-        }
-
-        // Server Second pass. Inputs hashed client id, random Y, -(x+y)*SEC, xID and xCID and Server secret SST. E and F help kangaroos to find error.
-        // If PIN error not required, set E and F = null
-
-        if !PINERROR {
-            rtn = server_2(
-                date,
-                &hid,
-                Some(&htid[..]),
-                &y,
-                &sst,
-                Some(&xid[..]),
-                Some(&xcid[..]),
-                &sec,
-                None,
-                None,
-            );
-        } else {
-            rtn = server_2(
-                date,
-                &hid,
-                Some(&htid[..]),
-                &y,
-                &sst,
-                Some(&xid[..]),
-                Some(&xcid[..]),
-                &sec,
-                Some(&mut e),
-                Some(&mut f),
-            );
-        }
-
-        if rtn == BAD_PIN {
-            println!("Server says - Bad Pin. I don't know you. Feck off.");
-            if PINERROR {
-                let err = kangaroo(&e, &f);
-                if err != 0 {
-                    println!("(Client PIN is out by {})", err)
-                }
-            }
-            return;
-        } else {
-            println!("Server says - PIN is good! You really are {}", name);
-        }
-
-        if FULL {
-            let mut pxcid = None;
-            if PERMITS {
-                pxcid = Some(&xcid[..])
-            };
-
-            hash_all(sha, &hcid, &xid, pxcid, &sec, &y, &z, &t, &mut h);
-            client_key(sha, &g1, &g2, pin, &r, &x, &h, &t, &mut ck);
-            print!("Client Key =  0x");
-            printbinary(&ck);
-
-            hash_all(sha, &hsid, &xid, pxcid, &sec, &y, &z, &t, &mut h);
-            server_key(sha, &z, &sst, &w, &h, &hid, &xid, pxcid, &mut sk);
-            print!("Server Key =  0x");
-            printbinary(&sk);
-        }
-    }
 }

@@ -21,6 +21,7 @@ use super::big;
 use super::big::{Big, MODBYTES};
 use crate::arch;
 use crate::arch::Chunk;
+use crate::std::{format, string::String};
 
 #[derive(Clone)]
 pub struct DBig {

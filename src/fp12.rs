@@ -17,14 +17,13 @@ specific language governing permissions and limitations
 under the License.
 */
 
-use std::str::SplitWhitespace;
-
 use super::big;
 use super::big::Big;
 use super::ecp;
 use super::fp2::FP2;
 use super::fp4::FP4;
 use super::rom;
+use crate::std::{format, str::SplitWhitespace, string::String};
 use crate::types::SexticTwist;
 
 pub const ZERO: usize = 0;

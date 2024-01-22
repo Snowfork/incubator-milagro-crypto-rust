@@ -29,6 +29,7 @@ use super::iso::{iso11_to_ecp, iso3_to_ecp2};
 use crate::errors::AmclError;
 use crate::hash256::HASH256;
 use crate::rand::RAND;
+use crate::std::{borrow::ToOwned, Vec};
 
 // Key Generation Constants
 /// Domain for key generation.

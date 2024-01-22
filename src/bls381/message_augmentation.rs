@@ -20,6 +20,7 @@ under the License.
 use super::core;
 use crate::errors::AmclError;
 use crate::rand::RAND;
+use crate::std::Vec;
 
 // Re-export constants from core.
 pub use super::core::{G1_BYTES, G2_BYTES, SECRET_KEY_BYTES};

@@ -20,9 +20,7 @@ under the License.
 use super::dbig::DBig;
 use crate::arch::{self, Chunk, DChunk};
 use crate::rand::RAND;
-
-use std::cmp::Ordering;
-use std::fmt;
+use crate::std::{cmp::Ordering, fmt, format, string::String};
 
 use codec::{Decode, Encode, MaxEncodedLen};
 use scale_info::TypeInfo;

@@ -6,6 +6,9 @@ extern crate serde_json;
 #[macro_use]
 extern crate serde_derive;
 
+extern crate alloc;
+
+mod std;
 pub mod aes;
 #[cfg(target_pointer_width = "32")]
 #[path = "arch/arch32.rs"]
